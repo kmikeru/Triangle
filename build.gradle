@@ -1,0 +1,33 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'application'
+
+sourceCompatibility = '1.8'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+mainClassName = 'ru.kmike.TriangleCalculator'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.4.10'
+    testCompile "org.spockframework:spock-core:1.1-groovy-2.4-rc-3"
+    runtime 'org.codehaus.groovy:groovy-all:2.4.10'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'ru.kmike.TriangleCalculator'
+    }
+}
+
+task fatJar(type: Jar) {
+	manifest {
+        attributes 'Main-Class': 'ru.kmike.TriangleCalculator'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}

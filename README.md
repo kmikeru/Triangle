@@ -1,0 +1,1 @@
+gradle fatJar && java -jar build/libs/Triangle-all.jar 1 2 3
