@@ -18,7 +18,7 @@ public class TriangleCalculator {
             }
         }
     }
-    
+    /** Check if there are exactly 3 arguments given an they could be parsed as number */
     private static BigDecimal[] parseArgs(String[] args){
         if(args.size()!=3)
             return null
