@@ -6,25 +6,25 @@ public class Triangle {
     private BigDecimal a,b,c // Triangle sides. BigDecimal of arbitrary precision is used to simplify comparisons
     
     public Triangle(BigDecimal a, BigDecimal b, BigDecimal c){
-        validateSides(a, b, c)            
-        this.a=a
-        this.b=b
-        this.c=c
-    }
-    /** Check if the triangle with specified sides could exist */
-    private boolean validateSides(BigDecimal a, BigDecimal b, BigDecimal c){
+        /** Check if the triangle with specified sides could exist */
         if( [a,b,c].any{it==null})
             throw new IllegalArgumentException('side cannot be null')
-        if( [a,b,c].any{it==0})
+        else if( [a,b,c].any{it==0})
             throw new IllegalArgumentException('side cannot be zero')
-        if( [a,b,c].any{it<0})
+        else if( [a,b,c].any{it<0})
             throw new IllegalArgumentException('side length cannot be negative')            
-        if( validateInequalities(a,b,c)==false)
+        else if( inequalitiesValidated(a,b,c)==false)
             throw new IllegalArgumentException('triangle inequalities violated')
+        else{
+            this.a=a
+            this.b=b
+            this.c=c
+        }
     }
+    
     /** Validate if triangle sides to triangle inequality rule 
      * @see https://en.wikipedia.org/wiki/Triangle_inequality */
-    private boolean validateInequalities(BigDecimal a, BigDecimal b, BigDecimal c){ 
+    private boolean inequalitiesValidated(BigDecimal a, BigDecimal b, BigDecimal c){ 
         if( (a+b>c)&&
             (b+c>a)&&
             (c+a)>b ){
