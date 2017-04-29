@@ -14,16 +14,23 @@ public class TriangleGUI {
     
     public static void main(String[] args){
         TriangleGUIModel model=new TriangleGUIModel()
-        model.sideA='5'
-        Closure updateAction = { println 'button clicked!'
-            try{                
-                Triangle t=new Triangle(model.lengthA(),model.lengthB(),model.lengthC())
-                model.message=t.determineType()                
+        
+        Closure updateAction = {
+            try{
+                BigDecimal a=model.getLengthA()
+                BigDecimal b=model.getLengthB()
+                BigDecimal c=model.getLengthC()
+                
+                if([a,b,c].every{it!=null}){
+                    Triangle t=new Triangle(a,b,c)
+                    model.message=t?.determineType()
+                }else{
+                    model.message='Triangle with specified sides cannot be created'
+                }
             }catch(Exception e){
                 model.message='error:'+e.message
             }
-        }
-        
+        }        
         TriangleView view=new TriangleView(model,updateAction)        
     }
             
@@ -56,13 +63,22 @@ class TriangleGUIModel{
     @Bindable String sideC
     @Bindable String message='Enter triangle sides\' lengths and click the button'
     
-    public BigDecimal lengthA(){
-        return new BigDecimal(this.sideA)
+    private BigDecimal getValidatedLength(String s){
+        try{
+            return new BigDecimal(s)
+        }catch(Exception e){
+            return null
+        }
     }
-    public BigDecimal lengthB(){
-        return new BigDecimal(this.sideB)
+    
+    public BigDecimal getLengthA(){
+        return getValidatedLength(this.sideA)
     }
-    public BigDecimal lengthC(){
-        return new BigDecimal(this.sideC)
+    public BigDecimal getLengthB(){
+        return getValidatedLength(this.sideB)
     }
+    public BigDecimal getLengthC(){
+        return getValidatedLength(this.sideC)
+    }
+    
 }
